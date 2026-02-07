@@ -1,15 +1,1 @@
-name = "torneo-squash"
-compatibility_date = "2024-01-01"
 
-# Cloudflare Pages configuration
-pages_build_output_dir = "public"
-
-# D1 Database binding
-[[d1_databases]]
-binding = "DB"
-database_name = "torneo-squash-db"
-database_id = "14009cc6-d269-4f69-8836-a29259e56b33"
-
-# Variables de entorno
-[vars]
-ENVIRONMENT = "production"
