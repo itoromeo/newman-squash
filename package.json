@@ -1,0 +1,24 @@
+{
+  "name": "torneo-squash",
+  "version": "1.0.0",
+  "description": "Sistema web para gestionar torneos de squash - Equipo SANTI vs Equipo LUCY",
+  "scripts": {
+    "dev": "wrangler pages dev public",
+    "deploy": "wrangler pages deploy public",
+    "db:create": "wrangler d1 create torneo-squash-db",
+    "db:init": "wrangler d1 execute torneo-squash-db --file=./schema.sql",
+    "db:query": "wrangler d1 execute torneo-squash-db --command"
+  },
+  "keywords": [
+    "squash",
+    "torneo",
+    "cloudflare",
+    "pages",
+    "d1"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}

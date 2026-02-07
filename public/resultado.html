@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingresar Resultado - Torneo Squash 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #6B2439 0%, #4a1828 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6B2439 0%, #4a1828 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .nav {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .nav a {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            text-decoration: none;
+            color: #495057;
+            font-weight: 600;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav a:hover, .nav a.active {
+            background: white;
+            color: #6B2439;
+            border-bottom-color: #6B2439;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #495057;
+            font-weight: 600;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #6B2439;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .game-score {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+
+        .game-score h3 {
+            margin-bottom: 15px;
+            color: #495057;
+            font-size: 1.1em;
+        }
+
+        .score-inputs {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .score-inputs input {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: 700;
+        }
+
+        .score-vs {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #6c757d;
+        }
+
+        .player-label {
+            text-align: center;
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .result-preview {
+            background: linear-gradient(135deg, #6B2439 0%, #4a1828 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .result-preview h3 {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .result-preview .winner {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: 700;
+            margin: 15px 0;
+        }
+
+        .result-preview .points {
+            text-align: center;
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Ingresar Resultado</h1>
+            <p>Reporta el resultado de tu partido</p>
+        </div>
+
+        <div class="nav">
+            <a href="index.html">Registro</a>
+            <a href="fixture.html">Fixture</a>
+            <a href="resultado.html" class="active">Resultados</a>
+            <a href="tabla.html">Tabla</a>
+        </div>
+
+        <div class="content">
+            <div id="alert" class="alert"></div>
+
+            <form id="resultadoForm">
+                <div class="form-group">
+                    <label for="match">Selecciona el partido *</label>
+                    <select id="match" name="match" required>
+                        <option value="">Cargando partidos...</option>
+                    </select>
+                </div>
+
+                <div id="scoreSection" style="display: none;">
+                    <div class="game-score">
+                        <h3>Game 1</h3>
+                        <div class="player-label" id="player1Label">Jugador 1</div>
+                        <div class="score-inputs">
+                            <input type="number" id="game1_p1" min="0" max="20" required>
+                            <span class="score-vs">-</span>
+                            <input type="number" id="game1_p2" min="0" max="20" required>
+                        </div>
+                        <div class="player-label" id="player2Label">Jugador 2</div>
+                    </div>
+
+                    <div class="game-score">
+                        <h3>Game 2</h3>
+                        <div class="score-inputs">
+                            <input type="number" id="game2_p1" min="0" max="20" required>
+                            <span class="score-vs">-</span>
+                            <input type="number" id="game2_p2" min="0" max="20" required>
+                        </div>
+                    </div>
+
+                    <div class="game-score">
+                        <h3>Game 3</h3>
+                        <div class="score-inputs">
+                            <input type="number" id="game3_p1" min="0" max="20" required>
+                            <span class="score-vs">-</span>
+                            <input type="number" id="game3_p2" min="0" max="20" required>
+                        </div>
+                    </div>
+
+                    <div class="game-score">
+                        <h3>Game 4 (opcional)</h3>
+                        <div class="score-inputs">
+                            <input type="number" id="game4_p1" min="0" max="20">
+                            <span class="score-vs">-</span>
+                            <input type="number" id="game4_p2" min="0" max="20">
+                        </div>
+                    </div>
+
+                    <div class="game-score">
+                        <h3>Game 5 (opcional)</h3>
+                        <div class="score-inputs">
+                            <input type="number" id="game5_p1" min="0" max="20">
+                            <span class="score-vs">-</span>
+                            <input type="number" id="game5_p2" min="0" max="20">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="observaciones">Observaciones (opcional)</label>
+                        <input type="text" id="observaciones" placeholder="Ej: Partido muy reñido">
+                    </div>
+
+                    <div id="resultPreview" class="result-preview"></div>
+
+                    <button type="submit" class="btn">Guardar Resultado</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentMatch = null;
+
+        async function loadPendingMatches() {
+            try {
+                const response = await fetch('/api/matches?estado=pendiente');
+                const matches = await response.json();
+                
+                const select = document.getElementById('match');
+                
+                if (matches.length === 0) {
+                    select.innerHTML = '<option value="">No hay partidos pendientes</option>';
+                    return;
+                }
+                
+                select.innerHTML = '<option value="">Selecciona un partido...</option>';
+                matches.forEach(match => {
+                    const option = document.createElement('option');
+                    option.value = match.id;
+                    option.textContent = `${match.tier} - ${match.jugador1} vs ${match.jugador2}`;
+                    option.dataset.match = JSON.stringify(match);
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error cargando partidos:', error);
+            }
+        }
+
+        document.getElementById('match').addEventListener('change', (e) => {
+            const option = e.target.selectedOptions[0];
+            if (!option.dataset.match) {
+                document.getElementById('scoreSection').style.display = 'none';
+                return;
+            }
+            
+            currentMatch = JSON.parse(option.dataset.match);
+            document.getElementById('player1Label').textContent = currentMatch.jugador1;
+            document.getElementById('player2Label').textContent = currentMatch.jugador2;
+            document.getElementById('scoreSection').style.display = 'block';
+        });
+
+        // Calcular ganador en tiempo real
+        const scoreInputs = document.querySelectorAll('input[type="number"]');
+        scoreInputs.forEach(input => {
+            input.addEventListener('input', calculateWinner);
+        });
+
+        function calculateWinner() {
+            const games = [1, 2, 3, 4, 5];
+            let p1Games = 0;
+            let p2Games = 0;
+            
+            games.forEach(g => {
+                const p1 = parseInt(document.getElementById(`game${g}_p1`).value) || 0;
+                const p2 = parseInt(document.getElementById(`game${g}_p2`).value) || 0;
+                
+                if (p1 > p2 && p1 >= 11) p1Games++;
+                if (p2 > p1 && p2 >= 11) p2Games++;
+            });
+            
+            const preview = document.getElementById('resultPreview');
+            
+            if (p1Games >= 3 || p2Games >= 3) {
+                const winner = p1Games > p2Games ? currentMatch.jugador1 : currentMatch.jugador2;
+                const winnerTeam = p1Games > p2Games ? currentMatch.equipo1 : currentMatch.equipo2;
+                const loserTeam = p1Games > p2Games ? currentMatch.equipo2 : currentMatch.equipo1;
+                
+                preview.innerHTML = `
+                    <h3>Vista Previa del Resultado</h3>
+                    <div class="winner">${winner}</div>
+                    <div style="text-align: center; font-size: 1.8em; font-weight: 700;">
+                        ${p1Games} - ${p2Games}
+                    </div>
+                    <div class="points">
+                        Equipo ${winnerTeam}: +3 puntos<br>
+                        Equipo ${loserTeam}: +1 punto
+                    </div>
+                `;
+                preview.style.display = 'block';
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+
+        document.getElementById('resultadoForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!currentMatch) {
+                showAlert('Selecciona un partido', 'error');
+                return;
+            }
+            
+            const data = {
+                match_id: currentMatch.id,
+                game1_p1: parseInt(document.getElementById('game1_p1').value),
+                game1_p2: parseInt(document.getElementById('game1_p2').value),
+                game2_p1: parseInt(document.getElementById('game2_p1').value),
+                game2_p2: parseInt(document.getElementById('game2_p2').value),
+                game3_p1: parseInt(document.getElementById('game3_p1').value),
+                game3_p2: parseInt(document.getElementById('game3_p2').value),
+                game4_p1: parseInt(document.getElementById('game4_p1').value) || null,
+                game4_p2: parseInt(document.getElementById('game4_p2').value) || null,
+                game5_p1: parseInt(document.getElementById('game5_p1').value) || null,
+                game5_p2: parseInt(document.getElementById('game5_p2').value) || null,
+                observaciones: document.getElementById('observaciones').value
+            };
+            
+            try {
+                const response = await fetch('/api/matches/result', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showAlert('✅ Resultado guardado exitosamente', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'fixture.html';
+                    }, 2000);
+                } else {
+                    showAlert(result.error || 'Error al guardar resultado', 'error');
+                }
+            } catch (error) {
+                showAlert('Error de conexión', 'error');
+                console.error('Error:', error);
+            }
+        });
+
+        function showAlert(message, type) {
+            const alert = document.getElementById('alert');
+            alert.textContent = message;
+            alert.className = `alert alert-${type}`;
+            alert.style.display = 'block';
+            
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        }
+
+        loadPendingMatches();
+    </script>
+</body>
+</html>
